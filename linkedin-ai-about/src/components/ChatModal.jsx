@@ -166,7 +166,7 @@ const ChatModal = ({
             {isMatchConfirmed && (
               <div className="mt-4 flex justify-center">
                 <button
-                  onClick={() => router.push('/connect')}
+                  onClick={() => router.push('/mynetwork')}
                   className="bg-amber-500 text-white px-6 py-2 rounded-full transition-all duration-200 transform hover:scale-105 hover:bg-amber-600 shadow-md hover:shadow-lg"
                 >
                   Connect & Schedule Meeting

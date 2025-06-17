@@ -24,7 +24,7 @@ const AboutMe = ({ onPromptClick, onOpenChat, onSend }) => {
           <button
             key={index}
             onClick={() => handlePromptClick(prompt)}
-            className="p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-all duration-200 transform hover:scale-105"
+            className="p-3 text-left bg-blue-100 hover:bg-blue-200 text-black rounded-lg transition-all duration-200 transform hover:scale-105 border border-blue-300 shadow-sm"
           >
             {prompt}
           </button>

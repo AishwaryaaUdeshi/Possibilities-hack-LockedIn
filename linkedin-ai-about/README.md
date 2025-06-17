@@ -97,3 +97,9 @@ interface UserProfile {
   updatedAt: Timestamp;
   status: string;
 }
+```
+
+---
+
+## System Design 
+

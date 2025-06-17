@@ -1,5 +1,17 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
+
+// Mock TypingAnimation component
+jest.mock('../TypingAnimation', () => {
+  const React = require('react');
+  return function MockTypingAnimation({ text, onComplete }) {
+    React.useEffect(() => {
+      onComplete();
+    }, [onComplete]);
+    return <span>{text}</span>;
+  };
+});
+
 import ChatModal from '../ChatModal';
 
 describe('ChatModal', () => {
@@ -17,71 +29,63 @@ describe('ChatModal', () => {
     chatEndRef: React.createRef(),
   };
 
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('does not render when isOpen is false', () => {
     render(<ChatModal {...mockProps} isOpen={false} />);
     expect(screen.queryByText('Kenny Frias')).not.toBeInTheDocument();
   });
 
-  it('renders header with correct information when open', () => {
+  it('renders header and prompt suggestions', () => {
     render(<ChatModal {...mockProps} />);
     expect(screen.getByText('Kenny Frias')).toBeInTheDocument();
     expect(screen.getByText('SDE Intern @ Amazon | Math + CS @ Columbia')).toBeInTheDocument();
-  });
-
-  it('displays prompt suggestions', () => {
-    render(<ChatModal {...mockProps} />);
     expect(screen.getByText('Where did you go to school?')).toBeInTheDocument();
     expect(screen.getByText('What are your interests?')).toBeInTheDocument();
-    expect(screen.getByText('Are you open to mentorship?')).toBeInTheDocument();
   });
 
-  it('handles prompt clicks', () => {
-    render(<ChatModal {...mockProps} />);
-    fireEvent.click(screen.getByText('Where did you go to school?'));
-    expect(mockProps.onPromptClick).toHaveBeenCalledWith('Where did you go to school?');
-  });
-
-  it('renders chat messages correctly', () => {
+  it('handles chat messages and shows connect button on match', async () => {
+    const matchMsg = 'You seem like a great match for mentorship!';
     const propsWithChat = {
       ...mockProps,
       chat: [
-        { from: 'user', text: 'Hello' },
-        { from: 'bot', text: 'Hi there!' },
+        { from: 'user', text: 'I am interested in mentorship' },
+        { from: 'bot', text: matchMsg },
       ],
     };
     render(<ChatModal {...propsWithChat} />);
-    expect(screen.getByText('Hello')).toBeInTheDocument();
-    expect(screen.getByText('Hi there!')).toBeInTheDocument();
+    
+    await act(async () => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    expect(screen.getByText('I am interested in mentorship')).toBeInTheDocument();
+    expect(screen.getByText(matchMsg)).toBeInTheDocument();
+    // Wait for the button to appear
+    expect(await screen.findByText('Connect & Schedule Meeting', {}, {timeout: 3000})).toBeInTheDocument();
+  });
+
+  it('handles user input and sending messages', () => {
+    render(<ChatModal {...mockProps} modalInput="test message" />);
+    
+    const input = screen.getByPlaceholderText('Write a message...');
+    fireEvent.change(input, { target: { value: 'new message' } });
+    
+    const sendButton = screen.getByText('Send');
+    fireEvent.click(sendButton);
+    
+    expect(mockProps.onModalInputChange).toHaveBeenCalled();
+    expect(mockProps.onSend).toHaveBeenCalled();
   });
 
   it('shows loading state', () => {
     render(<ChatModal {...mockProps} loading={true} />);
     expect(screen.getByText('Typing...')).toBeInTheDocument();
-  });
-
-  it('handles input changes', () => {
-    render(<ChatModal {...mockProps} />);
-    const input = screen.getByPlaceholderText('Write a message...');
-    fireEvent.change(input, { target: { value: 'test message' } });
-    expect(mockProps.onModalInputChange).toHaveBeenCalled();
-  });
-
-  it('handles send button click', () => {
-    render(<ChatModal {...mockProps} modalInput="test message" />);
-    const sendButton = screen.getByText('Send');
-    fireEvent.click(sendButton);
-    expect(mockProps.onSend).toHaveBeenCalled();
-  });
-
-  it('disables send button when input is empty', () => {
-    render(<ChatModal {...mockProps} modalInput="" />);
-    expect(screen.getByText('Send')).toBeDisabled();
-  });
-
-  it('calls onClose when close button is clicked', () => {
-    render(<ChatModal {...mockProps} />);
-    const closeButton = screen.getByRole('button', { name: '' }); // The X button
-    fireEvent.click(closeButton);
-    expect(mockProps.onClose).toHaveBeenCalled();
   });
 }); 

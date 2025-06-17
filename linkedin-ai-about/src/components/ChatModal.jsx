@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import TypingAnimation from './TypingAnimation';
+import ScheduleMeetingModal from './ScheduleMeetingModal';
 
 const promptSuggestions = [
   'Where did you go to school?',
   'What are your interests?',
-  'Are you open to mentorship?'
+  'Are you open to mentorship?',
+  "What's your role?"
 ];
 
 const ChatModal = ({ 
@@ -19,6 +22,48 @@ const ChatModal = ({
   modalInputRef,
   chatEndRef 
 }) => {
+  const [typingComplete, setTypingComplete] = useState({});
+  const [lastChatLength, setLastChatLength] = useState(0);
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [isMatch, setIsMatch] = useState(false);
+  const [isMatchConfirmed, setIsMatchConfirmed] = useState(false);
+
+  // Check for match in chat messages
+  useEffect(() => {
+    const lastBotMessage = chat.filter(msg => msg.from === 'bot').pop();
+    if (lastBotMessage?.text.includes('great match for mentorship')) {
+      setIsMatch(true);
+      // Set a timeout to show the connect button after the typing animation
+      const typingDuration = lastBotMessage.text.length * 50; // Approximate typing duration
+      setTimeout(() => {
+        setIsMatchConfirmed(true);
+      }, typingDuration + 1000); // Add 1 second buffer
+    }
+  }, [chat]);
+
+  // Only reset typing state for new messages
+  useEffect(() => {
+    if (chat.length > lastChatLength) {
+      const newMessageIndex = chat.length - 1;
+      setTypingComplete(prev => ({
+        ...prev,
+        [newMessageIndex]: false
+      }));
+      setLastChatLength(chat.length);
+    }
+  }, [chat.length, lastChatLength]);
+
+  const handleScheduleMeeting = (dateTime) => {
+    // Here you would typically make an API call to schedule the meeting
+    console.log('Scheduling meeting for:', dateTime);
+    // Add a confirmation message to the chat
+    const confirmationMsg = {
+      from: 'bot',
+      text: `Great! I've scheduled our meeting for ${dateTime.toLocaleString()}. I'll send you a calendar invite shortly.`
+    };
+    // You would need to add this message to your chat state through a prop
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -76,7 +121,19 @@ const ChatModal = ({
                     ? 'bg-blue-600 text-white hover:bg-blue-700' 
                     : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                 }`}>
-                  {msg.text}
+                  {msg.from === 'user' ? (
+                    msg.text
+                  ) : (
+                    typingComplete[i] ? (
+                      msg.text
+                    ) : (
+                      <TypingAnimation 
+                        key={`typing-${i}-${chat.length}`}
+                        text={msg.text} 
+                        onComplete={() => setTypingComplete(prev => ({ ...prev, [i]: true }))}
+                      />
+                    )
+                  )}
                 </div>
               </div>
             ))}
@@ -89,6 +146,18 @@ const ChatModal = ({
             )}
           </div>
           <div ref={chatEndRef} />
+
+          {/* Connect button */}
+          {isMatchConfirmed && (
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={() => setShowScheduleModal(true)}
+                className="bg-amber-500 text-white px-6 py-2 rounded-full transition-all duration-200 transform hover:scale-105 hover:bg-amber-600 shadow-md hover:shadow-lg"
+              >
+                Connect & Schedule Meeting
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Input area */}
@@ -119,6 +188,13 @@ const ChatModal = ({
           </div>
         </div>
       </div>
+
+      {/* Schedule Meeting Modal */}
+      <ScheduleMeetingModal
+        isOpen={showScheduleModal}
+        onClose={() => setShowScheduleModal(false)}
+        onSchedule={handleScheduleMeeting}
+      />
     </div>
   );
 };

@@ -2,18 +2,11 @@
 
 import React, { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { ConnectRequestData } from '../../types/network';
 import VerifiedMatchBadge from './VerifiedMatchBadge';
 import SummaryTooltip from './SummaryTooltip';
 import CalendarPopup from './CalendarPopup';
 
-interface ConnectRequestProps {
-  request: ConnectRequestData;
-  onAccept: (requestId: string) => void;
-  onDecline: (requestId: string) => void;
-}
-
-const ConnectRequest: React.FC<ConnectRequestProps> = ({
+const ConnectRequest = ({
   request,
   onAccept,
   onDecline,

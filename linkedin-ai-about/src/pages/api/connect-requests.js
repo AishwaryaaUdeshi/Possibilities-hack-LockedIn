@@ -1,9 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../lib/firebase';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
-import { ConnectRequestData } from '../../../types/network';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -24,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     );
 
     const querySnapshot = await getDocs(q);
-    const connectRequests: ConnectRequestData[] = [];
+    const connectRequests = [];
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
@@ -50,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     res.status(200).json(sortedRequests);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching connect requests:', error);
     
     // If it's an index error, return empty array instead of 500

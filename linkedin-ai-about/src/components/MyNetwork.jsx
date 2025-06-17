@@ -1,15 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ConnectRequestData } from '../../types/network';
 import ConnectRequest from './ConnectRequest';
 
-interface MyNetworkProps {
-  userId: string;
-}
-
-const MyNetwork: React.FC<MyNetworkProps> = ({ userId }) => {
-  const [connectRequests, setConnectRequests] = useState<ConnectRequestData[]>([]);
+const MyNetwork = ({ userId }) => {
+  const [connectRequests, setConnectRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,7 +29,7 @@ const MyNetwork: React.FC<MyNetworkProps> = ({ userId }) => {
       }
       
       // Sort requests: verified matches first, then others
-      const sortedRequests = data.sort((a: ConnectRequestData, b: ConnectRequestData) => {
+      const sortedRequests = data.sort((a, b) => {
         if (a.isVerifiedMatch && !b.isVerifiedMatch) return -1;
         if (!a.isVerifiedMatch && b.isVerifiedMatch) return 1;
         return 0;
@@ -49,7 +44,7 @@ const MyNetwork: React.FC<MyNetworkProps> = ({ userId }) => {
     }
   };
 
-  const handleAcceptRequest = async (requestId: string) => {
+  const handleAcceptRequest = async (requestId) => {
     try {
       const response = await fetch('/api/connect-requests/accept', {
         method: 'POST',
@@ -68,7 +63,7 @@ const MyNetwork: React.FC<MyNetworkProps> = ({ userId }) => {
     }
   };
 
-  const handleDeclineRequest = async (requestId: string) => {
+  const handleDeclineRequest = async (requestId) => {
     try {
       const response = await fetch('/api/connect-requests/decline', {
         method: 'POST',

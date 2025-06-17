@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import MyNetwork from '../components/MyNetwork';
 
-const MyNetworkPage: React.FC = () => {
+const MyNetworkPage = () => {
   // Mock user ID for demo purposes
   const mockUserId = '1';
 

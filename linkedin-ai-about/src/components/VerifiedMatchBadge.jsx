@@ -3,20 +3,14 @@
 import React, { useState } from 'react';
 import SummaryTooltip from './SummaryTooltip';
 
-interface VerifiedMatchBadgeProps {
-  summary: string;
-  availability: any;
-  onCalendarClick: () => void;
-}
-
-const VerifiedMatchBadge: React.FC<VerifiedMatchBadgeProps> = ({
+const VerifiedMatchBadge = ({
   summary,
   availability,
   onCalendarClick,
 }) => {
   const [showSummary, setShowSummary] = useState(false);
 
-  const handleCalendarClick = (e: React.MouseEvent) => {
+  const handleCalendarClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
     console.log('Calendar icon clicked!');

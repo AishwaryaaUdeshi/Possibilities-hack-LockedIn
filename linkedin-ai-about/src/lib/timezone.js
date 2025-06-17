@@ -1,7 +1,5 @@
-// Timezone utility functions
-
 // Common timezone mappings for major cities/locations
-const LOCATION_TIMEZONE_MAP: { [key: string]: string } = {
+const LOCATION_TIMEZONE_MAP = {
   // US Cities
   'San Francisco': 'America/Los_Angeles',
   'Los Angeles': 'America/Los_Angeles',
@@ -58,7 +56,7 @@ const LOCATION_TIMEZONE_MAP: { [key: string]: string } = {
 };
 
 // Company timezone mappings (common tech companies)
-const COMPANY_TIMEZONE_MAP: { [key: string]: string } = {
+const COMPANY_TIMEZONE_MAP = {
   'Google': 'America/Los_Angeles',
   'Microsoft': 'America/Los_Angeles',
   'Apple': 'America/Los_Angeles',
@@ -87,7 +85,7 @@ const COMPANY_TIMEZONE_MAP: { [key: string]: string } = {
  * @param company - Company name
  * @returns IANA timezone identifier
  */
-export function detectTimezone(location?: string, company?: string): string {
+export function detectTimezone(location, company) {
   // First try to match by company
   if (company) {
     const companyTimezone = COMPANY_TIMEZONE_MAP[company];
@@ -121,8 +119,8 @@ export function detectTimezone(location?: string, company?: string): string {
  * @param timezone - IANA timezone identifier
  * @returns Timezone abbreviation
  */
-export function getTimezoneAbbreviation(timezone: string): string {
-  const abbreviations: { [key: string]: string } = {
+export function getTimezoneAbbreviation(timezone) {
+  const abbreviations = {
     'America/Los_Angeles': 'PST',
     'America/New_York': 'EST',
     'America/Chicago': 'CST',
@@ -160,7 +158,7 @@ export function getTimezoneAbbreviation(timezone: string): string {
  * @param timezone - IANA timezone identifier
  * @returns Formatted time with timezone
  */
-export function formatTimeWithTimezone(time: string, timezone: string): string {
+export function formatTimeWithTimezone(time, timezone) {
   const abbreviation = getTimezoneAbbreviation(timezone);
   return `${time} (${abbreviation})`;
 }
@@ -174,11 +172,11 @@ export function formatTimeWithTimezone(time: string, timezone: string): string {
  * @returns Converted time in HH:MM format
  */
 export function convertTimeBetweenTimezones(
-  time: string,
-  fromTimezone: string,
-  toTimezone: string,
-  date: string = new Date().toISOString().split('T')[0]
-): string {
+  time,
+  fromTimezone,
+  toTimezone,
+  date = new Date().toISOString().split('T')[0]
+) {
   try {
     const dateTimeString = `${date}T${time}:00`;
     const dateObj = new Date(dateTimeString);

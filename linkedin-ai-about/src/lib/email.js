@@ -1,29 +1,30 @@
 import nodemailer from 'nodemailer';
 import { formatTimeWithTimezone, getTimezoneAbbreviation } from './timezone';
 
-// Create transporter
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.EMAIL_PORT || '587'),
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// Check if email configuration is available
+const hasEmailConfig = process.env.EMAIL_USER && process.env.EMAIL_PASS;
 
-interface CalendarInviteData {
-  date: string;
-  time: string;
-  menteeEmail: string;
-  mentorEmail: string;
-  menteeName: string;
-  mentorName?: string;
-  timezone?: string;
+// Create transporter only if configuration is available
+let transporter = null;
+if (hasEmailConfig) {
+  try {
+    transporter = nodemailer.createTransporter({
+      host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+      port: parseInt(process.env.EMAIL_PORT || '587'),
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+  } catch (error) {
+    console.error('❌ Failed to create email transporter:', error);
+    transporter = null;
+  }
 }
 
 // Generate iCal calendar event
-function generateCalendarEvent(data: CalendarInviteData) {
+function generateCalendarEvent(data) {
   // Get timezone offset for the specified timezone
   const timezone = data.timezone || 'UTC';
   
@@ -48,7 +49,7 @@ function generateCalendarEvent(data: CalendarInviteData) {
     `DTSTART;TZID=${timezone}:${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}`,
     `DTEND;TZID=${timezone}:${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}`,
     `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
-    `ORGANIZER;CN=LinkedIn Clone:mailto:${process.env.EMAIL_USER}`,
+    `ORGANIZER;CN=LinkedIn Clone:mailto:${process.env.EMAIL_USER || 'noreply@linkedin-clone.com'}`,
     `ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=${data.menteeName}:mailto:${data.menteeEmail}`,
     `ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=${data.mentorName || 'Mentor'}:mailto:${data.mentorEmail}`,
     `SUMMARY:Mentor-Mentee Meeting: ${data.menteeName} & ${data.mentorName || 'Mentor'}`,
@@ -69,7 +70,11 @@ function generateCalendarEvent(data: CalendarInviteData) {
 }
 
 // Send calendar invite to mentee
-export async function sendCalendarInviteToMentee(data: CalendarInviteData) {
+export async function sendCalendarInviteToMentee(data) {
+  if (!transporter) {
+    throw new Error('Email transporter not configured. Please check EMAIL_USER and EMAIL_PASS environment variables.');
+  }
+
   const calendarEvent = generateCalendarEvent(data);
   const timezone = data.timezone || 'UTC';
   const timezoneAbbr = getTimezoneAbbreviation(timezone);
@@ -118,7 +123,11 @@ export async function sendCalendarInviteToMentee(data: CalendarInviteData) {
 }
 
 // Send calendar invite to mentor
-export async function sendCalendarInviteToMentor(data: CalendarInviteData) {
+export async function sendCalendarInviteToMentor(data) {
+  if (!transporter) {
+    throw new Error('Email transporter not configured. Please check EMAIL_USER and EMAIL_PASS environment variables.');
+  }
+
   const calendarEvent = generateCalendarEvent(data);
   const timezone = data.timezone || 'UTC';
   const timezoneAbbr = getTimezoneAbbreviation(timezone);
@@ -167,7 +176,15 @@ export async function sendCalendarInviteToMentor(data: CalendarInviteData) {
 }
 
 // Send calendar invites to both parties
-export async function sendCalendarInvites(data: CalendarInviteData) {
+export async function sendCalendarInvites(data) {
+  if (!hasEmailConfig) {
+    throw new Error('Email configuration not available. Please set EMAIL_USER and EMAIL_PASS environment variables.');
+  }
+
+  if (!transporter) {
+    throw new Error('Email transporter not available. Please check your email configuration.');
+  }
+
   try {
     console.log('📧 Sending calendar invites...');
     

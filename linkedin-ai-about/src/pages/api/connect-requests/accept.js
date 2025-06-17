@@ -1,6 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -17,16 +15,16 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     // 2. Send notification to the other user
     // 3. Update any relevant metrics
     
-    console.log(`User ${userId} declined connection request ${requestId}`);
+    console.log(`User ${userId} accepted connection request ${requestId}`);
     
     // Mock successful response
     res.status(200).json({ 
-      message: 'Connection request declined successfully',
+      message: 'Connection request accepted successfully',
       requestId,
       userId
     });
   } catch (error) {
-    console.error('Error declining connection request:', error);
+    console.error('Error accepting connection request:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 } 

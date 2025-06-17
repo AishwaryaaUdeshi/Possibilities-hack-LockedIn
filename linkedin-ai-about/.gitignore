@@ -33,6 +33,13 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# Firebase
+serviceAccountKey.json
+.firebaserc
+firebase.json
+firestore.rules
+firestore.indexes.json
+
 # vercel
 .vercel
 

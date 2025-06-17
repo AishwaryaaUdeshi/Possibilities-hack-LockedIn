@@ -11,7 +11,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "firebase": "^11.9.1",
     "next": "15.3.3",
+    "openai": "^5.5.0",
     "react": "^19.0.0",
     "react-calendar": "^6.0.0",
     "react-dom": "^19.0.0"

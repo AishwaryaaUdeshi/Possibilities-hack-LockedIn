@@ -36,6 +36,13 @@ yarn-error.log*
 .env*.local
 .env
 
+# Firebase
+serviceAccountKey.json
+.firebaserc
+firebase.json
+firestore.rules
+firestore.indexes.json
+
 # vercel
 .vercel
 

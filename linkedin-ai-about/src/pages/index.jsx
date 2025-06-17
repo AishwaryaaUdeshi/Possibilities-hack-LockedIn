@@ -36,10 +36,10 @@ export default function Home() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMsg.text })
+        body: JSON.stringify({ question: userMsg.text })
       });
       const data = await res.json();
-      setChat(prev => [...prev, { from: 'bot', text: data.reply }]);
+      setChat(prev => [...prev, { from: 'bot', text: data.answer }]);
     } catch (err) {
       setChat(prev => [...prev, { from: 'bot', text: 'Sorry, something went wrong.' }]);
     }

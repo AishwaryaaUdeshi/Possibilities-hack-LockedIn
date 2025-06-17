@@ -111,11 +111,24 @@ export const getSpecialRequests = async () => {
 };
 
 export const getProfile = async (userId) => {
-  const docRef = doc(db, "profiles", userId);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data();
-  } else {
-    throw new Error("Profile not found");
+  console.log('Attempting to fetch profile for userId:', userId);
+  try {
+    const docRef = doc(db, COLLECTIONS.PROFILES, userId);
+    console.log('Document reference created for path:', `profiles/${userId}`);
+    
+    const docSnap = await getDoc(docRef);
+    console.log('Document snapshot retrieved, exists:', docSnap.exists());
+    
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      console.log('Profile data retrieved:', data);
+      return data;
+    } else {
+      console.error('Profile not found for userId:', userId);
+      throw new Error("Profile not found");
+    }
+  } catch (error) {
+    console.error('Error in getProfile:', error);
+    throw error;
   }
 }; 

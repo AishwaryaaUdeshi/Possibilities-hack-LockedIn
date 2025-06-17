@@ -1,6 +1,7 @@
 import { getProfile } from "../../lib/firestore";
 
 export default function getSystemPrompt(profile) {
+  console.log('Creating system prompt with profile:', profile);
   if (!profile) {
     throw new Error("No profile provided to getSystemPrompt");
   }
@@ -29,6 +30,13 @@ And every single response you give, give it some random wacky tailwind styles, a
 
 // Async function to fetch profile and return the system prompt
 export async function getDynamicSystemPrompt(userId) {
-  const profile = await getProfile(userId);
-  return getSystemPrompt(profile);
+  console.log('Fetching profile for userId:', userId);
+  try {
+    const profile = await getProfile(userId);
+    console.log('Successfully fetched profile:', profile);
+    return getSystemPrompt(profile);
+  } catch (error) {
+    console.error('Error in getDynamicSystemPrompt:', error);
+    throw error;
+  }
 }

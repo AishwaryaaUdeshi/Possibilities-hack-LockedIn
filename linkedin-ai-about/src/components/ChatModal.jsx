@@ -30,8 +30,8 @@ const ChatModal = ({
 
   // Check for match in chat messages
   useEffect(() => {
-    const lastBotMessage = chat.filter(msg => msg.from === 'bot').pop();
-    if (lastBotMessage?.text.includes('great match for mentorship')) {
+    const lastBotMessage = chat?.filter(msg => msg?.from === 'bot')?.pop();
+    if (lastBotMessage?.text?.includes('great match for mentorship')) {
       setIsMatch(true);
       // Set a timeout to show the connect button after the typing animation
       const typingDuration = lastBotMessage.text.length * 50; // Approximate typing duration
@@ -62,6 +62,17 @@ const ChatModal = ({
       text: `Great! I've scheduled our meeting for ${dateTime.toLocaleString()}. I'll send you a calendar invite shortly.`
     };
     // You would need to add this message to your chat state through a prop
+  };
+
+  const handleSend = () => {
+    if (!modalInput.trim()) return;
+    
+    // Add user message to chat
+    const userMessage = {
+      from: 'user',
+      text: modalInput
+    };
+    onSend(userMessage);
   };
 
   if (!isOpen) return null;
@@ -179,7 +190,7 @@ const ChatModal = ({
                   ? 'text-blue-600 hover:text-blue-700 hover:scale-105' 
                   : 'text-gray-400'
               }`}
-              onClick={onSend}
+              onClick={handleSend}
               disabled={loading || !modalInput.trim()}
               type="button"
             >

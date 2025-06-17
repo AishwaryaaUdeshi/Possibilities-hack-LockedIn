@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { formatTimeWithTimezone, getTimezoneAbbreviation } from '../src/lib/timezone';
 
 interface CalendarPopupProps {
   availability: any;
@@ -40,6 +41,7 @@ const CalendarPopup: React.FC<CalendarPopupProps> = ({
           menteeEmail,
           mentorEmail,
           menteeName,
+          timezone: availability?.timezone || 'UTC',
         }),
       });
 
@@ -78,6 +80,9 @@ const CalendarPopup: React.FC<CalendarPopupProps> = ({
     return date.toISOString().split('T')[0];
   });
 
+  const timezone = availability?.timezone || 'UTC';
+  const timezoneAbbr = getTimezoneAbbreviation(timezone);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
       <div className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4 transform transition-all">
@@ -94,6 +99,13 @@ const CalendarPopup: React.FC<CalendarPopupProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
+          </div>
+
+          {/* Timezone Information */}
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <p className="text-sm text-blue-800">
+              <strong>Time zone:</strong> {timezoneAbbr}
+            </p>
           </div>
 
           <div className="space-y-4">

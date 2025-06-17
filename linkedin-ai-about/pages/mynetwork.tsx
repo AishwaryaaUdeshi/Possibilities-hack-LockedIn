@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import MyNetwork from '../../components/MyNetwork';
+import MyNetwork from '../components/MyNetwork';
 
 const MyNetworkPage: React.FC = () => {
   // Mock user ID for demo purposes

@@ -1,13 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { MeetingScheduleData } from '../../types/network';
-import { sendCalendarInvites } from '../../lib/email';
+import { sendCalendarInvites } from '../../src/lib/email';
+import { db } from '../../src/lib/firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { date, time, menteeEmail, mentorEmail, menteeName }: MeetingScheduleData = req.body;
+  const { date, time, menteeEmail, mentorEmail, menteeName, mentorName, timezone }: MeetingScheduleData = req.body;
 
   if (!date || !time || !menteeEmail || !mentorEmail || !menteeName) {
     return res.status(400).json({ message: 'All fields are required' });
@@ -25,12 +27,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: 'Meeting must be scheduled for a future date and time' });
     }
 
+    // Get the actual mentor name from the database
+    let actualMentorName = mentorName;
+    if (!actualMentorName) {
+      try {
+        const interactionsRef = collection(db, 'interactions');
+        const q = query(
+          interactionsRef,
+          where('mentorEmail', '==', mentorEmail),
+          where('menteeEmail', '==', menteeEmail)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const data = querySnapshot.docs[0].data();
+          actualMentorName = data.mentorProfile?.name || 'Mentor';
+        }
+      } catch (error) {
+        console.log('Could not fetch mentor name, using default');
+        actualMentorName = 'Mentor';
+      }
+    }
+
     console.log('📅 Scheduling meeting:', {
       date,
       time,
       menteeEmail,
       mentorEmail,
-      menteeName
+      menteeName,
+      mentorName: actualMentorName,
+      timezone
     });
 
     // Send calendar invites to both parties
@@ -40,7 +65,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       menteeEmail,
       mentorEmail,
       menteeName,
-      mentorName: 'Your Mentor' // You can customize this based on your data
+      mentorName: actualMentorName,
+      timezone: timezone || 'UTC'
     });
 
     // In a real application, you would also:
@@ -56,22 +82,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       menteeEmail,
       mentorEmail,
       menteeName,
+      mentorName: actualMentorName,
+      timezone,
       note: 'Real calendar invites have been sent to both parties'
     });
   } catch (error) {
     console.error('❌ Error scheduling meeting:', error);
-    
-    // Check if it's an email error
-    if (error.code === 'EAUTH' || error.code === 'ECONNECTION') {
-      return res.status(500).json({ 
-        message: 'Email service error. Please check your email configuration.',
-        error: 'Email configuration issue'
-      });
-    }
-    
-    res.status(500).json({ 
-      message: 'Internal server error while scheduling meeting',
-      error: error.message 
-    });
+    res.status(500).json({ message: 'Internal server error' });
   }
 } 

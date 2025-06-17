@@ -23,6 +23,8 @@ export interface MeetingScheduleData {
   menteeEmail: string;
   mentorEmail: string;
   menteeName: string;
+  mentorName?: string;
+  timezone?: string;
 }
 
 export interface DatabaseUser {

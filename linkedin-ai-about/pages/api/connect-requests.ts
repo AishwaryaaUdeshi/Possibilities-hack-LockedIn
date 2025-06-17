@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '../../lib/firebase';
+import { db } from '../../src/lib/firebase';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { ConnectRequestData } from '../../types/network';
 

@@ -4,13 +4,13 @@ An interactive AI-powered profile experience that extends LinkedIn's static "Abo
 
 ---
 
-## 🚀 Overview
+## Overview
 
 LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT models to create dynamic, conversational "About Me" profiles. By combining structured user inputs with AI-driven chat, it allows users to showcase their personality far beyond static text.
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 - **Frontend Framework:** Next.js 14.1.0
 - **Language:** TypeScript / JavaScript
@@ -22,7 +22,7 @@ LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT 
 
 ---
 
-## 🏗️ System Components
+## System Components
 
 ### Pages
 
@@ -42,7 +42,7 @@ LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT 
 
 ---
 
-## 🔄 Data Flow
+## Data Flow
 
 ### Profile Creation Flow
 
@@ -62,7 +62,7 @@ LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT 
 
 ---
 
-## 🗄️ State Management
+## State Management
 
 - React Hooks for local state
 - Firebase Firestore for persistence
@@ -70,7 +70,7 @@ LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT 
 
 ---
 
-## 🌐 API Endpoints
+## API Endpoints
 
 ### `/api/chat`
 - Handles chat request processing
@@ -83,7 +83,7 @@ LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT 
 
 ---
 
-## 🗃️ Database Schema
+## Database Schema
 
 ```typescript
 interface UserProfile {

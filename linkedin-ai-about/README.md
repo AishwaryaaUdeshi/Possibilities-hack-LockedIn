@@ -95,5 +95,13 @@ interface UserProfile {
   conversations: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;
+
+
   status: string;
 }
+
+https://github.com/user-attachments/assets/e7063b70-4954-4232-8d26-c52318052631
+
+
+
+

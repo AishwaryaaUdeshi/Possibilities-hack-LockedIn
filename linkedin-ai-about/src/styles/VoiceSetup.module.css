@@ -1,0 +1,72 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f2ef;
+  padding: 20px;
+}
+
+.content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+  padding: 32px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+}
+
+.title {
+  color: rgba(0,0,0,.9);
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.description {
+  color: rgba(0,0,0,.6);
+  font-size: 16px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.previousButton {
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: transparent;
+  color: #0a66c2;
+  border: 1px solid #0a66c2;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.previousButton:hover {
+  background-color: rgba(10, 102, 194, 0.1);
+}
+
+.nextButton {
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: #0a66c2;
+  color: white;
+  border: none;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.nextButton:hover {
+  background-color: #004182;
+} 

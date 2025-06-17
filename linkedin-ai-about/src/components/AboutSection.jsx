@@ -5,9 +5,9 @@ const aboutText = `Hi! My name is Kenny, and I am a QuestBridge match to Columbi
 const AboutSection = () => {
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-2">About</h2>
+      <h2 className="text-2xl font-bold mb-2 text-blue-600">About</h2>
       <p className="text-gray-700 mb-2">{aboutText}</p>
-      <span className="text-gray-400 text-sm">kenny.frias@columbia.edu</span>
+      <span className="text-blue-600 text-sm">kenny.frias@columbia.edu</span>
     </div>
   );
 };

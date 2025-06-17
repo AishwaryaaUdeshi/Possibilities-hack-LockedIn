@@ -5,6 +5,7 @@ import { db } from '../lib/firebase';
 import { QUESTIONS } from '../constants/questions';
 import { UserProfile } from '../types';
 import styles from '../styles/PromptQuestions.module.css';
+import { saveProfile } from '../lib/firestore';
 
 export default function PromptQuestions() {
   const router = useRouter();
@@ -66,7 +67,8 @@ export default function PromptQuestions() {
 
       try {
         setIsNavigating(true);
-        console.log('Validating answers before saving...');
+        console.log('Starting save process...');
+        console.log('Current answers state:', answers);
         
         // Clean and validate answers for database storage
         const validatedAnswers = Object.entries(answers).reduce((acc, [key, value]) => {
@@ -76,19 +78,23 @@ export default function PromptQuestions() {
           return { ...acc, [key]: value.trim() };
         }, {});
 
-        console.log('Attempting to save answers to Firebase:', validatedAnswers);
+        console.log('Validated answers:', validatedAnswers);
         
-        // Store user responses with metadata for future reference
-        const docRef = await addDoc(collection(db, 'userProfiles'), {
+        // Save to Cloud Firestore using the saveProfile function
+        const profileData = {
           ...validatedAnswers,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
           status: 'completed'
-        });
+        };
         
-        console.log('Successfully saved to Firebase with ID:', docRef.id);
+        console.log('Attempting to save to Cloud Firestore...');
+        const profileId = await saveProfile(profileData);
+        
+        console.log('Successfully saved to Cloud Firestore with ID:', profileId);
         alert('Your answers have been saved successfully!');
         setIsNavigating(false);
+        
+        // Optionally redirect to another page after successful save
+        // router.push('/profile');
       } catch (error) {
         console.error('Error in save process:', error);
         if (error instanceof Error) {

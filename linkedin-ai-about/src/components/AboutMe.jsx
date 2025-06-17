@@ -5,7 +5,7 @@ const AboutMe = ({ onPromptClick, onOpenChat, onSend }) => {
     "What's your current role?",
     "What are your key skills?",
     "What's your career goal?",
-    "What's your role?"
+    "What's your work experience?"
   ];
 
   const handlePromptClick = (prompt) => {

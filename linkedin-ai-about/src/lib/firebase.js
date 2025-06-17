@@ -1,16 +1,15 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-// Your Firebase configuration
-// You'll need to replace these with your actual Firebase project config
+
 const firebaseConfig = {
-    apiKey: "AIzaSyAG0R9mfLxaebZB2DfGnzFR6YHHZgHP5OA",
-    authDomain: "linkedin2025.firebaseapp.com",
-    projectId: "linkedin2025",
-    storageBucket: "linkedin2025.firebasestorage.app",
-    messagingSenderId: "834178383373",
-    appId: "1:834178383373:web:a360edafbb9533b5019f44"
-  };
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY, 
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN, 
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID, 
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET, 
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID, 
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID, 
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

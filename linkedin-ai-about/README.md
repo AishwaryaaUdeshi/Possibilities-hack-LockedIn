@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LinkedIn BioBot
 
-## Getting Started
+An interactive AI-powered profile experience that extends LinkedIn's static "About Me" section. Users build rich personal profiles through guided prompts, and visitors can engage with a personalized AI that mimics the user's communication style.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT models to create dynamic, conversational "About Me" profiles. By combining structured user inputs with AI-driven chat, it allows users to showcase their personality far beyond static text.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧰 Tech Stack
 
-## Learn More
+- **Frontend Framework:** Next.js 14.1.0
+- **Language:** TypeScript / JavaScript
+- **Styling:** CSS
+- **Database:** Firebase Firestore
+- **Authentication:** Firebase Auth
+- **AI Integration:** OpenAI GPT-3.5 Turbo
+- **Testing:** Jest, React Testing Library
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏗️ System Components
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Pages
 
-## Deploy on Vercel
+| Route              | Description |
+|--------------------|-------------|
+| `/`                | Redirects to guided profile creation |
+| `/prompt-questions`| Guided questions for profile building |
+| `/test-chat`       | AI chat interface for interaction |
+| `/api/chat`        | Backend integration with OpenAI |
+| `/api/prompt`      | Dynamic system prompt generator |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Core Components
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Further Familiarization** — Displays profile data and prompt suggestions.
+- **Ask me Anything** — User input field for AI chat interaction.
+- **Chat Model** — Full chat interface, chat state, scheduling integration.
+
+---
+
+## 🔄 Data Flow
+
+### Profile Creation Flow
+
+1️⃣ User answers guided questions  
+2️⃣ Answers are validated  
+3️⃣ Profile saved to Firestore  
+4️⃣ System prompt is dynamically generated  
+5️⃣ Chat interface becomes available
+
+### Chat Flow
+
+1️⃣ User sends a message  
+2️⃣ Message processed by OpenAI  
+3️⃣ AI generates context-aware response  
+4️⃣ Response displayed with typing animation  
+5️⃣ Scheduling flow triggered
+
+---
+
+## 🗄️ State Management
+
+- React Hooks for local state
+- Firebase Firestore for persistence
+- Context API for shared global state (if needed)
+
+---
+
+## 🌐 API Endpoints
+
+### `/api/chat`
+- Handles chat request processing
+- Integrates with OpenAI GPT-3.5 Turbo
+- Manages user-specific context
+
+### `/api/prompt`
+- Fetches user profile data
+- Generates personalized system prompts
+
+---
+
+## 🗃️ Database Schema
+
+```typescript
+interface UserProfile {
+  mentor: string;
+  'describe-yourself': string;
+  'decisions-you-make': string;
+  'what-you-value': string;
+  misunderstood: string;
+  conversations: string;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+  status: string;
+}

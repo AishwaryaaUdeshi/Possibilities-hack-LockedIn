@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '../../src/lib/firebase';
+import { db } from '../../lib/firebase';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
-import { ConnectRequestData } from '../../types/network';
+import { ConnectRequestData } from '../../../types/network';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     res.status(200).json(sortedRequests);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching connect requests:', error);
     
     // If it's an index error, return empty array instead of 500

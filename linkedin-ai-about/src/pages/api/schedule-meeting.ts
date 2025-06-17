@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { MeetingScheduleData } from '../../types/network';
-import { sendCalendarInvites } from '../../src/lib/email';
-import { db } from '../../src/lib/firebase';
+import { MeetingScheduleData } from '../../../types/network';
+import { sendCalendarInvites } from '../../lib/email';
+import { db } from '../../lib/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

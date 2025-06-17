@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ConnectRequestData } from '../types/network';
+import { formatDistanceToNow } from 'date-fns';
+import { ConnectRequestData } from '../../types/network';
 import VerifiedMatchBadge from './VerifiedMatchBadge';
 import SummaryTooltip from './SummaryTooltip';
 import CalendarPopup from './CalendarPopup';

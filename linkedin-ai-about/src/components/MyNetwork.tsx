@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { ConnectRequestData } from '../../types/network';
 import ConnectRequest from './ConnectRequest';
-import { ConnectRequestData } from '../types/network';
 
 interface MyNetworkProps {
   userId: string;

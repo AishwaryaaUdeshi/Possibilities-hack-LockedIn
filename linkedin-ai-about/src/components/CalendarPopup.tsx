@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { formatTimeWithTimezone, getTimezoneAbbreviation } from '../src/lib/timezone';
+import { formatTimeWithTimezone, getTimezoneAbbreviation } from '../lib/timezone';
 
 interface CalendarPopupProps {
   availability: any;

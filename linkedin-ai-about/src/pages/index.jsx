@@ -1,15 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import AboutSection from '../components/AboutSection';
 import AskAnything from '../components/AskAnything';
 import AboutMe from '../components/AboutMe';
+import ChatModal from '../components/ChatModal';
 
-// Dynamically import ChatModal with no SSR
-const ChatModal = dynamic(() => import('../components/ChatModal'), {
-  ssr: false
-});
-
-const aboutText = `Hi! My name is Kenny, and I am a QuestBridge match to Columbia University. At Columbia, I am building a deep intuition for problem-solving with the goal of utilizing technology to make tangible impacts in my areas of interest, which include education, climate change, artificial intelligence, and quantitative finance. Feel free to reach out to kenny.frias@columbia.edu!`;
+const aboutText = `Hi! My name is Kenny, and I am a QuestBridge match to Columbia University. At Columbia, I am building a deep intuition for problem-solving with the goal of utilizing technology to make tangible impacts in my areas of interest, which include education, climate change, artificial intelligence, and quantitative finance. Feel free to reach out!`;
 
 const promptSuggestions = [
   'Where did you go to school?',

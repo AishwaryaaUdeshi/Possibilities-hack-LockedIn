@@ -83,7 +83,6 @@ LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT 
 
 ---
 https://github.com/user-attachments/assets/e7063b70-4954-4232-8d26-c52318052631
-https://github.com/AishwaryaaUdeshi/Possibilities-hack-LockedIn/blob/97137d9cb26c9edd60bdce255e2a3558981931ac/LockedIn%20Presentation%20(1).pdf
 ## Database Schema
 
 ```typescript

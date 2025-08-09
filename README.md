@@ -12,7 +12,7 @@ LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT 
 
 ## Tech Stack
 
-- **Frontend Framework:** Next.js 14.1.0
+- **Frontend Framework:** React, Next.js 14.1.0
 - **Language:** TypeScript / JavaScript
 - **Styling:** CSS
 - **Database:** Firebase Firestore

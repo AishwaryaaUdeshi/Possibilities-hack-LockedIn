@@ -74,7 +74,7 @@ LinkedIn BioBot is a full-stack Next.js application that leverages OpenAI's GPT 
 
 ### `/api/chat`
 - Handles chat request processing
-- Integrates with OpenAI GPT-3.5 Turbo
+- Integrates with OpenAI GPT-4o
 - Manages user-specific context
 
 ### `/api/prompt`
